@@ -35,19 +35,27 @@ public class Searcher {
         }
     }
 
-    void findPerson(){
-        System.out.println("Enter a name or email to search all suitable people.");
-        String person = in.next().toLowerCase().trim();
-        if (map.containsKey(person)){
-            Set<Integer> result = map.get(person);
-            System.out.println(result.size() + " person(s) found.");
-            for(int i : result){
-                System.out.println(info.get(i));
-            }
-        }else {
-            System.out.println("No matching people found.");
+    void findPerson() {
+        System.out.println("Select a matching strategy: ALL, ANY, NONE");
+        String type = in.next().toUpperCase();
+        Finder finder = null;
+        switch (type){
+            case "ALL":
+                finder = new Finder(new ALL());
+                finder.strategy.find(info, map);
+                break;
+            case "ANY" :
+                finder = new Finder(new ANY());
+                finder.strategy.find(info, map);
+                break;
+            case "NONE":
+                finder = new Finder(new NONE());
+                finder.strategy.find(info, map);
+                break;
+            default:
+                System.out.println("Invalid input!");
         }
-        System.out.println("\n");
+
     }
 
     public void showMenu() {
@@ -83,6 +91,7 @@ public class Searcher {
         }else {
             System.out.println("No data available.");
         }
+        System.out.println("\n");
     }
 }
 
